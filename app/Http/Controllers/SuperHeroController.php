@@ -8,7 +8,6 @@ use App\Models\Universe;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-
 class SuperheroController extends Controller
 {
     /**
@@ -16,8 +15,8 @@ class SuperheroController extends Controller
      */
     public function index()
     {
-    $superheroes = Superhero::all();
-    return view('superheroes.index', compact('superheroes'));//
+        $superheroes = Superhero::all();
+        return view('superheroes.index', compact('superheroes'));
     }
 
     /**
@@ -25,9 +24,9 @@ class SuperheroController extends Controller
      */
     public function create()
     {
-       $genders = Gender::select('id', 'name')->get();
-       $universes = Universe::select('id','name')->get();
-       return view('superheroes.create',compact('genders', 'universes')); //
+        $genders = Gender::select('id', 'name')->get();
+        $universes = Universe::select('id', 'name')->get();
+        return view('superheroes.create', compact('genders', 'universes'));
     }
 
     /**
@@ -35,18 +34,23 @@ class SuperheroController extends Controller
      */
     public function store(Request $request)
     {
-        Superhero::create([
-
-            'gender_id' => $request->gender_id,
-            'real_name' => $request ->real_name,
-            'universe_id' => 1,
-            'name' => 'Spiderman',
-            'picture' => $request->picture,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+        $request->validate([
+            'gender_id' => 'required|exists:genders,id',
+            'real_name' => 'required|string|max:255',
+            'universe_id' => 'required|exists:universes,id',
+            'name' => 'required|string|max:255',
+            'picture' => 'nullable|string|max:255',
         ]);
 
-        return to_route ('superheroes.index');
+        Superhero::create([
+            'gender_id' => $request->gender_id,
+            'real_name' => $request->real_name,
+            'universe_id' => $request->universe_id,
+            'name' => $request->name,
+            'picture' => $request->picture,
+        ]);
+
+        return to_route('superheroes.index')->with('success', 'Superhéroe creado correctamente.');
     }
 
     /**
@@ -54,8 +58,8 @@ class SuperheroController extends Controller
      */
     public function show(string $id)
     {
-        $superhero = Superhero::findorfail($id);
-        return view('superheroes.show',compact('superhero'));
+        $superhero = Superhero::findOrFail($id);
+        return view('superheroes.show', compact('superhero'));
     }
 
     /**
@@ -63,11 +67,10 @@ class SuperheroController extends Controller
      */
     public function edit(string $id)
     {
-        $superhero = Superhero::findorfail($id);
+        $superhero = Superhero::findOrFail($id);
         $genders = Gender::select('id', 'name')->get();
-        $universes = Universe::select('id','name')->get();
-        return view('superheroes.edit', compact('superhero'));
-
+        $universes = Universe::select('id', 'name')->get();
+        return view('superheroes.edit', compact('superhero', 'genders', 'universes'));
     }
 
     /**
@@ -75,18 +78,24 @@ class SuperheroController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //dd($request);
-        $superhero = Superhero::find($id);
+        $request->validate([
+            'gender_id' => 'required|exists:genders,id',
+            'real_name' => 'required|string|max:255',
+            'universe_id' => 'required|exists:universes,id',
+            'name' => 'required|string|max:255',
+            'picture' => 'nullable|string|max:255',
+        ]);
+
+        $superhero = Superhero::findOrFail($id);
         $superhero->update([
             'gender_id' => $request->gender_id,
-            'real_name' => $request ->real_name,
-            'universe_id' => 1,
+            'real_name' => $request->real_name,
+            'universe_id' => $request->universe_id,
             'name' => $request->name,
             'picture' => $request->picture,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
         ]);
-        return to_route ('superheroes.index');
+
+        return to_route('superheroes.index')->with('success', 'Superhéroe actualizado correctamente.');
     }
 
     /**
@@ -94,8 +103,8 @@ class SuperheroController extends Controller
      */
     public function destroy(string $id)
     {
-        $superhero = Superhero::find($id);
+        $superhero = Superhero::findOrFail($id);
         $superhero->delete();
-        return to_route ('superheroes.index');
+        return to_route('superheroes.index')->with('success', 'Superhéroe eliminado correctamente.');
     }
 }
