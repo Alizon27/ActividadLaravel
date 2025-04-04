@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit superhero</title>
-</head>
-<body>
-    <h1>Edit a Superhero</h1>
+@extends('layouts.app')
 
-    <form action="{{ route('superheroes.update', $superhero->id) }}" method="POST">
-        @csrf
-        @method('patch')
-        
-        <label for="gender">Gender</label>
-        <select name="gender_id" id="gender">
+@section('content')
+
+<h1 class="header-sanrio">🌸 Editar Superhéroe 🌸</h1>
+
+<form action="{{ route('superheroes.update', $superhero->id) }}" method="POST">
+    @csrf
+    @method('patch')
+
+    <div class="form-group">
+        <label for="gender" class="label-sanrio">Género</label>
+        <select name="gender_id" id="gender" class="input-sanrio">
             @foreach($genders as $gender)
                 <option value="{{ $gender->id }}" 
                     @if ($gender->id == $superhero->gender_id)
@@ -22,9 +19,11 @@
                 >{{ $gender->name }}</option>
             @endforeach
         </select>
+    </div>
 
-        <label for="universe">Universe</label>
-        <select name="universe_id" id="universe">
+    <div class="form-group">
+        <label for="universe" class="label-sanrio">Universo</label>
+        <select name="universe_id" id="universe" class="input-sanrio">
             @foreach($universes as $universe) 
                 <option value="{{ $universe->id }}" 
                     @if ($universe->id == $superhero->universe_id)
@@ -33,28 +32,29 @@
                 >{{ $universe->name }}</option>
             @endforeach
         </select>
+    </div>
 
-        <br><br>
+    <div class="form-group">
+        <label for="real_name" class="label-sanrio">Nombre Real</label>
+        <input type="text" name="real_name" value="{{ $superhero->real_name }}" class="input-sanrio">
+    </div>
 
-        <label for="real_name">Real Name</label>
-        <input type="text" name="real_name" value="{{ $superhero->real_name }}">
+    <div class="form-group">
+        <label for="name" class="label-sanrio">Nombre</label>
+        <input type="text" name="name" value="{{ $superhero->name }}" class="input-sanrio">
+    </div>
 
-        <br><br>
+    <div class="form-group">
+        <label for="picture" class="label-sanrio">Imagen</label>
+        <input type="text" name="picture" value="{{ $superhero->picture }}" class="input-sanrio">
+    </div>
 
-        <label for="name">Name</label>
-        <input type="text" name="name" value="{{ $superhero->name }}">
+    <div class="form-group">
+        <input type="submit" value="Actualizar" class="btn-sanrio">
+    </div>
+</form>
 
-        <br><br>
+<br>
+<a href="{{ route('gender.index') }}" class="btn-sanrio">Volver a la Lista</a>
 
-        <label for="picture">Picture</label>
-        <input type="text" name="picture" value="{{ $superhero->picture }}">
-
-        <br><br>
-
-        <input type="submit" value="Edit">
-    </form>
-
-    <br>
-    <a href="{{ route('gender.index') }}">Back to List</a>
-</body>
-</html>
+@endsection

@@ -1,23 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Superhero Card</title>
-</head>
-<body>
-    <h1>Superhero Card</h1>
+@extends('layouts.app')
 
-    <p>Name: {{ $superhero->name }}</p>
-        
-        <p>Real Name: {{ $superhero->real_name }}</p>
-        
-        <p>Gender: {{ $superhero->gender_id }},  {{ $superhero->gender->name }}</p>
+@section('content')
 
-        <p>Universe: {{ $superhero->universe_id }},  {{ $superhero->universe->name}}</p>
+<h1 class="header-sanrio">🌸 Tarjeta de Superhéroe 🌸</h1>
 
-        <p>Picture: {{ $superhero->picture }}</p>
+<div class="superhero-card">
+    <h2 class="name-sanrio">{{ $superhero->name }}</h2>
+    
+    <p class="label-sanrio">Nombre Real:</p>
+    <p>{{ $superhero->real_name }}</p>
 
-                 <a href="{{ route('superheroes.index') }}">Back to List</a>
-</body>
-</html>
+    <p class="label-sanrio">Género:</p>
+    <p>{{ $superhero->gender->name }}</p>
+
+    <p class="label-sanrio">Universo:</p>
+    <p>{{ $superhero->universe->name }}</p>
+
+    <p class="label-sanrio">Imagen:</p>
+    <p>{{ $superhero->picture }}</p>
+</div>
+
+<div class="back-button">
+    <a href="{{ route('superheroes.index') }}" class="btn-sanrio">Volver a la Lista</a>
+</div>
+
+@endsection

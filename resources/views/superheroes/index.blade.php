@@ -1,30 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Superheroes table</title>
-</head>
-<body>
-    <h1>Superheroes</h1>
+@extends('layouts.app')
 
-    <hr> 
-        <a href="{{ route('superheroes.create') }}">Create Superheroes</a>
-        <a href="{{ route('gender.create') }}" class="btn btn-primary">Create gender</a>
-        <a href="{{ route('gender.index') }}" class="btn btn-primary">Edit gender</a>
-        <a href="{{ route('universes.index') }}" class="btn btn-primary">Edit universes</a>
+@section('content')
+
+    <h1 class="header-sanrio">🌸 Lista de Superhéroes 🌸</h1>
 
     <hr> 
 
-    <table>
+    <a href="{{ route('superheroes.create') }}" class="btn-sanrio">➕ Crear Superhéroe</a>
+    <a href="{{ route('gender.create') }}" class="btn-sanrio">➕ Crear Género</a>
+    <a href="{{ route('gender.index') }}" class="btn-sanrio">✏️ Editar Géneros</a>
+    <a href="{{ route('universes.index') }}" class="btn-sanrio">✏️ Editar Universos</a>
+
+    <hr> 
+
+    <table class="table-sanrio">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>universe_id</th>
-                <th>gender_id</th>
-                <th>Name</th>
-                <th>Real Name</th>
-                <th>picture</th>
+                <th>ID</th>
+                <th>Universo</th>
+                <th>Género</th>
+                <th>Nombre</th>
+                <th>Nombre Real</th>
+                <th>Imagen</th>
+                <th>Acciones</th>
             </tr>
         </thead>
 
@@ -32,28 +30,24 @@
             @foreach($superheroes as $item)
             <tr>
                 <td>{{$item->id}}</td>
-                <td>{{$item->universe_id}}</td>
-                <td>{{$item->gender_id}}</td>
+                <td>{{$item->universe->name}}</td>
+                <td>{{$item->gender->name}}</td>
                 <td>{{$item->name}}</td>
                 <td>{{$item->real_name}}</td>
                 <td><img src="{{$item->picture}}" alt="{{$item->name}}" width="100"></td>
                 <td>
-                    <a href="{{ route('gender.edit', $item->gender_id) }}" class="btn btn-warning">Edit</a>
-                    <a href="{{ route('gender.show', $item->gender_id) }}" class="btn btn-info">Show</a>
+                    <a href="{{ route('gender.edit', $item->gender_id) }}" class="btn-sanrio">✏️ Editar</a>
+                    <a href="{{ route('gender.show', $item->gender_id) }}" class="btn-sanrio">👀 Ver</a>
                     <br>
                     <form action="{{ route('superheroes.destroy', $item->id) }}" method="post">
                         @csrf
                         @method('delete')
-                        <input type="submit" value="Delete" onclick="return confirm('Are you pretty sure? There is no way back')">
-                    <form>
+                        <input type="submit" value="❌ Eliminar" onclick="return confirm('¿Estás segur@? No hay vuelta atrás')" class="btn-sanrio">
+                    </form>
                 </td>
-
             </tr>
-
             @endforeach
-            
         </tbody>
     </table>
 
-</body>
-</html>
+@endsection
