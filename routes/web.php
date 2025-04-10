@@ -21,6 +21,12 @@ Route::middleware('auth')->group(function () {
 
     // Rutas de superhéroes (CRUD)
     Route::resource('superheroes', SuperheroController::class);
+
+    // Rutas para los géneros de los superhéroes
+    Route::get('superheroes/gender', [SuperheroController::class, 'showGender'])->name('superheroes.gender');
+
+    // Rutas para los universos de los superhéroes
+    Route::get('superheroes/universes', [SuperheroController::class, 'showUniverses'])->name('superheroes.universes');
 });
 
 require __DIR__.'/auth.php';
